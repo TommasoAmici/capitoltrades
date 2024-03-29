@@ -1,0 +1,20 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT chat_id\nFROM tracked_politicians\nWHERE politician_id = ?1\n  AND chat_id NOT IN (\n    SELECT chat_id\n    FROM notified_trades\n    WHERE tx_id = ?3\n  )\nUNION\nSELECT chat_id\nFROM tracked_issuers\nWHERE issuer_id = ?2\n  AND chat_id NOT IN (\n    SELECT chat_id\n    FROM notified_trades\n    WHERE tx_id = ?3\n  )\n",
+  "describe": {
+    "columns": [
+      {
+        "name": "chat_id",
+        "ordinal": 0,
+        "type_info": "Int64"
+      }
+    ],
+    "parameters": {
+      "Right": 3
+    },
+    "nullable": [
+      false
+    ]
+  },
+  "hash": "9d6aa288d5ac8f53d21abfb56e7781fabf481a877a4375b9651ee01a376f0f21"
+}

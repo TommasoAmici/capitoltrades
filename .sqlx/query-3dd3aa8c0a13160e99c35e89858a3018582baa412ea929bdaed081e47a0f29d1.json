@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "DELETE FROM tracked_politicians WHERE chat_id = ? AND politician_id = ?",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 2
+    },
+    "nullable": []
+  },
+  "hash": "3dd3aa8c0a13160e99c35e89858a3018582baa412ea929bdaed081e47a0f29d1"
+}

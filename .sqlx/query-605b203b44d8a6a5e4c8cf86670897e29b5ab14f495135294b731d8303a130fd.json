@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "DELETE FROM tracked_issuers WHERE chat_id = ? AND issuer_id = ?",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 2
+    },
+    "nullable": []
+  },
+  "hash": "605b203b44d8a6a5e4c8cf86670897e29b5ab14f495135294b731d8303a130fd"
+}

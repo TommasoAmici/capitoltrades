@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "INSERT INTO tracked_politicians (chat_id, politician_id) VALUES (?, ?)",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 2
+    },
+    "nullable": []
+  },
+  "hash": "9516df067d825b1273a6fe826a117227ad1a5c0399596e962aafc68600ea152d"
+}

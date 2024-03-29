@@ -1,0 +1,6 @@
+{
+  "rust-analyzer.linkedProjects": [
+    "./crates/telegram_bot/Cargo.toml",
+    "./crates/capitoltrades_api/Cargo.toml"
+  ]
+}

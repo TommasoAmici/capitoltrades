@@ -1,0 +1,20 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT politician_id FROM tracked_politicians WHERE chat_id = ?",
+  "describe": {
+    "columns": [
+      {
+        "name": "politician_id",
+        "ordinal": 0,
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": [
+      false
+    ]
+  },
+  "hash": "88ec7c81198aadd701ef320d5dc9d6959501e913d85a298b57f246418f13175a"
+}

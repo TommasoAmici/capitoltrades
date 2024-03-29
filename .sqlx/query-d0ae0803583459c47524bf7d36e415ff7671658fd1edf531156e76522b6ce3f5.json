@@ -1,0 +1,20 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT issuer_id AS \"issuer_id: i64\" FROM tracked_issuers WHERE chat_id = ?",
+  "describe": {
+    "columns": [
+      {
+        "name": "issuer_id: i64",
+        "ordinal": 0,
+        "type_info": "Int64"
+      }
+    ],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": [
+      false
+    ]
+  },
+  "hash": "d0ae0803583459c47524bf7d36e415ff7671658fd1edf531156e76522b6ce3f5"
+}

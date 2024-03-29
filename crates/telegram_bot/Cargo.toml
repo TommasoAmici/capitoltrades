@@ -1,0 +1,27 @@
+[package]
+name = "capitoltrades_telegram_bot"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "bot"
+path = "src/bot.rs"
+
+[[bin]]
+name = "notify"
+path = "src/notify.rs"
+
+[dependencies]
+capitoltrades_api = { path = "../capitoltrades_api" }
+chrono = "0.4"
+teloxide = { version = "0.12", features = ["macros", "throttle"] }
+tokio = { version = "1", features = ["rt-multi-thread", "macros"] }
+tracing = "0.1"
+tracing-subscriber = "0.3"
+
+sqlx = { version = "0.7", features = [
+  "runtime-tokio",
+  "sqlite",
+  "json",
+  "macros",
+] }

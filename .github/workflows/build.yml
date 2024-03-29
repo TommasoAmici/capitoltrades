@@ -1,0 +1,83 @@
+name: Build
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: Swatinem/rust-cache@v2
+      - run: cargo build --release
+      - run: cargo test --release
+      - uses: actions/upload-artifact@v4
+        with:
+          name: artifacts
+          path: |
+            target/release/bot
+            target/release/notify
+
+  release:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    needs:
+      - build
+    steps:
+      - uses: actions/checkout@v4
+      - name: Create changelog
+        id: changelog
+        uses: TriPSs/conventional-changelog-action@v5
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          git-push: "false"
+          skip-version-file: "true"
+          output-file: "false"
+          skip-commit: "true"
+          skip-on-empty: "true"
+          skip-tag: "true"
+
+      - uses: actions/download-artifact@v4
+        if: ${{ steps.changelog.outputs.skipped == 'false' }}
+        with:
+          name: artifacts
+          path: artifacts
+
+      - name: Create Release
+        run: gh release create "$TAG_NAME" --notes "$BODY" artifacts/bot artifacts/notify
+        if: ${{ steps.changelog.outputs.skipped == 'false' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG_NAME: ${{ steps.changelog.outputs.tag }}
+          BODY: ${{ steps.changelog.outputs.clean_changelog }}
+
+      - name: rsync bot
+        uses: burnett01/rsync-deployments@7.0.0
+        if: ${{ steps.changelog.outputs.skipped == 'false' }}
+        with:
+          switches: -avzrP
+          path: artifacts/
+          remote_path: /apps/capitoltrades/
+          remote_host: ${{ secrets.SSH_HOST }}
+          remote_port: ${{ secrets.SSH_PORT }}
+          remote_user: ${{ secrets.SSH_USER }}
+          remote_key: ${{ secrets.SSH_KEY }}
+
+      - name: Restart service
+        uses: appleboy/ssh-action@v1.0.3
+        if: ${{ steps.changelog.outputs.skipped == 'false' }}
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            chmod +x /apps/capitoltrades/bot /apps/capitoltrades/notify
+            sudo systemctl restart capitoltrades.service

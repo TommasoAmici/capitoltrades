@@ -25,3 +25,4 @@ sqlx = { version = "0.7", features = [
   "json",
   "macros",
 ] }
+rand = "0.8.5"

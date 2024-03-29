@@ -2,7 +2,9 @@ use capitoltrades_api::{Client, Query, TradeQuery};
 use capitoltrades_telegram_bot::{
     markdown::trades::trade_to_markdown, notifications::notified_trades::get_to_notify,
 };
+use rand::prelude::*;
 use sqlx::SqlitePool;
+use std::time::Duration;
 use teloxide::{
     adaptors::throttle::Limits,
     payloads::SendMessageSetters,
@@ -29,6 +31,11 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .run(&pool)
         .await
         .expect("Migrations failed");
+
+    let mut rng = thread_rng();
+    let secs = rng.gen_range(60..120);
+    tokio::time::sleep(Duration::from_secs(secs)).await;
+
     let bot = Bot::from_env().throttle(Limits::default());
 
     tracing::info!("Getting recent trades");

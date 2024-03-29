@@ -182,6 +182,7 @@ version = "0.1.0"
 dependencies = [
  "capitoltrades_api",
  "chrono",
+ "rand",
  "sqlx",
  "teloxide",
  "tokio",

@@ -150,7 +150,9 @@ pub async fn search_callback(
             untrack_issuer(pool, chat_id, issuer_id).await?;
         }
         Status::Untracked => {
-            track_issuer(pool, chat_id, issuer_id).await?;
+            let client = Client::new();
+            let issuer = client.get_issuer(issuer_id).await?;
+            track_issuer(pool, chat_id, &issuer.data).await?;
         }
     };
     bot.edit_message_reply_markup(msg.chat.id, msg.id)

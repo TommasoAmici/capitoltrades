@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "INSERT INTO tracked_issuers (chat_id, issuer_id, price) VALUES (?, ?, ?)",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 3
+    },
+    "nullable": []
+  },
+  "hash": "e180357ae53101ec414ab87a34ae04d61ac0dac990961e3745e9f97ddd492e0d"
+}

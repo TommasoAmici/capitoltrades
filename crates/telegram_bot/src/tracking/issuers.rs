@@ -1,3 +1,4 @@
+use capitoltrades_api::types::IssuerDetail;
 use sqlx::{Error, SqlitePool};
 
 pub async fn get_tracked_issuers(pool: &SqlitePool, chat_id: i64) -> Result<Vec<i64>, Error> {
@@ -9,11 +10,20 @@ pub async fn get_tracked_issuers(pool: &SqlitePool, chat_id: i64) -> Result<Vec<
     .await
 }
 
-pub async fn track_issuer(pool: &SqlitePool, chat_id: i64, issuer_id: i64) -> Result<(), Error> {
+pub async fn track_issuer(
+    pool: &SqlitePool,
+    chat_id: i64,
+    issuer: &IssuerDetail,
+) -> Result<(), Error> {
+    let price = match &issuer.performance {
+        Some(performance) => performance.last_price(),
+        None => None,
+    };
     sqlx::query!(
-        "INSERT INTO tracked_issuers (chat_id, issuer_id) VALUES (?, ?)",
+        "INSERT INTO tracked_issuers (chat_id, issuer_id, price) VALUES (?, ?, ?)",
         chat_id,
-        issuer_id
+        issuer.issuer_id,
+        price,
     )
     .execute(pool)
     .await?;

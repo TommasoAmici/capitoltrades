@@ -1,5 +1,5 @@
 mod meta;
-pub use self::meta::{Meta, PaginatedResponse, Paging};
+pub use self::meta::{Meta, PaginatedResponse, Paging, Response};
 
 mod issuer;
 pub use self::issuer::{EodPrice, IssuerDetail, IssuerID, MarketCap, Performance, Sector};

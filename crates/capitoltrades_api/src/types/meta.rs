@@ -19,3 +19,8 @@ pub struct PaginatedResponse<T> {
     meta: Meta,
     pub data: Vec<T>,
 }
+
+#[derive(Serialize, Deserialize)]
+pub struct Response<T> {
+    pub data: T,
+}

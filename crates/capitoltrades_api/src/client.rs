@@ -3,7 +3,7 @@ use url::Url;
 
 use crate::{
     query::{IssuerQuery, PoliticianQuery, Query, TradeQuery},
-    types::{IssuerDetail, PaginatedResponse, PoliticianDetail, Trade},
+    types::{IssuerDetail, PaginatedResponse, PoliticianDetail, Response, Trade},
     user_agent::get_user_agent,
     Error,
 };
@@ -19,12 +19,15 @@ impl Client {
         }
     }
 
-    fn get_url(&self, path: &str, query: &impl Query) -> Url {
+    fn get_url(&self, path: &str, query: Option<&impl Query>) -> Url {
         let mut url = Url::parse(format!("{}{}", &self.base_api_url, path).as_str()).unwrap();
-        query.add_to_url(&mut url)
+        match query {
+            Some(query) => query.add_to_url(&mut url),
+            None => url,
+        }
     }
 
-    async fn get<T, Q>(&self, path: &str, query: &Q) -> Result<PaginatedResponse<T>, Error>
+    async fn get<T, Q>(&self, path: &str, query: Option<&Q>) -> Result<T, Error>
     where
         T: DeserializeOwned,
         Q: Query,
@@ -53,7 +56,7 @@ impl Client {
                 tracing::error!("Failed to get resource: {}", e);
                 Error::RequestFailed
             })?
-            .json::<PaginatedResponse<T>>()
+            .json::<T>()
             .await
             .map_err(|e| {
                 tracing::error!("Failed to parse resource: {}", e);
@@ -63,22 +66,34 @@ impl Client {
     }
 
     pub async fn get_trades(&self, query: &TradeQuery) -> Result<PaginatedResponse<Trade>, Error> {
-        self.get::<Trade, TradeQuery>("/trades", query).await
+        self.get::<PaginatedResponse<Trade>, TradeQuery>("/trades", Some(query))
+            .await
     }
 
     pub async fn get_politicians(
         &self,
         query: &PoliticianQuery,
     ) -> Result<PaginatedResponse<PoliticianDetail>, Error> {
-        self.get::<PoliticianDetail, PoliticianQuery>("/politicians", query)
-            .await
+        self.get::<PaginatedResponse<PoliticianDetail>, PoliticianQuery>(
+            "/politicians",
+            Some(query),
+        )
+        .await
+    }
+
+    pub async fn get_issuer(&self, issuer_id: i64) -> Result<Response<IssuerDetail>, Error> {
+        self.get::<Response<IssuerDetail>, IssuerQuery>(
+            format!("/issuers/{}", issuer_id).as_str(),
+            None,
+        )
+        .await
     }
 
     pub async fn get_issuers(
         &self,
         query: &IssuerQuery,
     ) -> Result<PaginatedResponse<IssuerDetail>, Error> {
-        self.get::<IssuerDetail, IssuerQuery>("/issuers", query)
+        self.get::<PaginatedResponse<IssuerDetail>, IssuerQuery>("/issuers", Some(query))
             .await
     }
 }

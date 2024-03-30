@@ -73,6 +73,11 @@ pub struct Performance {
 
     pub ytd_change: f64,
 }
+impl Performance {
+    pub fn last_price(&self) -> Option<f64> {
+        EodPrice::last_price_from_vec(&self.eod_prices)
+    }
+}
 
 #[derive(Serialize, Deserialize)]
 pub struct Stats {

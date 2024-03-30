@@ -1,5 +1,5 @@
 use super::format_volume;
-use capitoltrades_api::types::{EodPrice, IssuerDetail, Performance};
+use capitoltrades_api::types::{IssuerDetail, Performance};
 use teloxide::utils::markdown::escape;
 
 fn performance_to_markdown(performance: &Option<Performance>) -> String {
@@ -7,7 +7,7 @@ fn performance_to_markdown(performance: &Option<Performance>) -> String {
         Some(performance) => {
             format!(
                 "\nPrice: {}. 30d: {:.2}%. 90d: {:.2}%. 365d: {:.2}%.",
-                match EodPrice::last_price_from_vec(&performance.eod_prices) {
+                match performance.last_price() {
                     Some(price) => price.to_string(),
                     None => "No price data.".to_string(),
                 },

@@ -15,3 +15,14 @@ pub async fn get_to_notify(
     .fetch_all(pool)
     .await
 }
+
+pub async fn record_delivery(pool: &SqlitePool, chat_id: i64, tx_id: i64) -> Result<(), Error> {
+    sqlx::query_file!(
+        "src/notifications/queries/record_delivery.sql",
+        chat_id,
+        tx_id
+    )
+    .execute(pool)
+    .await?;
+    Ok(())
+}

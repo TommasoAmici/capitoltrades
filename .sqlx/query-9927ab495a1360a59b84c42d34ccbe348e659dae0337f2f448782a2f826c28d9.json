@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "INSERT INTO notified_trades (chat_id, tx_id)\nVALUES (?1, ?2) ON CONFLICT DO NOTHING;\n",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 2
+    },
+    "nullable": []
+  },
+  "hash": "9927ab495a1360a59b84c42d34ccbe348e659dae0337f2f448782a2f826c28d9"
+}

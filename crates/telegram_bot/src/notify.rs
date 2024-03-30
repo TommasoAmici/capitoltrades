@@ -1,6 +1,7 @@
 use capitoltrades_api::{Client, Query, TradeQuery};
 use capitoltrades_telegram_bot::{
-    markdown::trades::trade_to_markdown, notifications::notified_trades::get_to_notify,
+    markdown::trades::trade_to_markdown,
+    notifications::notified_trades::{get_to_notify, record_delivery},
 };
 use rand::prelude::*;
 use sqlx::SqlitePool;
@@ -52,9 +53,19 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         let text = trade_to_markdown(&trade);
         for chat_id in should_notify {
             tracing::info!("Notifying {}", chat_id);
-            bot.send_message(ChatId(chat_id), &text)
+            let sent = bot
+                .send_message(ChatId(chat_id), &text)
                 .parse_mode(teloxide::types::ParseMode::MarkdownV2)
-                .await?;
+                .await;
+            match sent {
+                Ok(_) => {
+                    tracing::info!("Notified {}", chat_id);
+                    record_delivery(&pool, chat_id, trade.tx_id).await?;
+                }
+                Err(e) => {
+                    tracing::error!("Failed to notify {}: {}", chat_id, e);
+                }
+            };
         }
     }
 

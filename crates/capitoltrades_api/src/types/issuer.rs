@@ -6,6 +6,7 @@ extern crate serde_json;
 pub type IssuerID = i64;
 
 #[derive(Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct IssuerDetail {
     #[serde(rename = "_issuerId")]
     pub issuer_id: IssuerID,
@@ -16,85 +17,60 @@ pub struct IssuerDetail {
     #[serde(rename = "c2iq")]
     c2_iq: Option<String>,
 
-    #[serde(rename = "country")]
     country: Option<String>,
 
-    #[serde(rename = "issuerName")]
     pub issuer_name: String,
 
-    #[serde(rename = "issuerTicker")]
     pub issuer_ticker: Option<String>,
 
-    #[serde(rename = "performance")]
     pub performance: Option<Performance>,
 
-    #[serde(rename = "sector")]
     pub sector: Option<Sector>,
 
-    #[serde(rename = "stats")]
     pub stats: Stats,
 }
 
 #[derive(Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct Performance {
-    #[serde(rename = "eodPrices")]
     pub eod_prices: Vec<Vec<EodPrice>>,
 
-    #[serde(rename = "mcap")]
     pub mcap: i64,
 
-    #[serde(rename = "trailing1")]
     pub trailing1: f64,
 
-    #[serde(rename = "trailing1Change")]
     pub trailing1_change: f64,
 
-    #[serde(rename = "trailing7")]
     pub trailing7: f64,
 
-    #[serde(rename = "trailing7Change")]
     pub trailing7_change: f64,
 
-    #[serde(rename = "trailing30")]
     pub trailing30: f64,
 
-    #[serde(rename = "trailing30Change")]
     pub trailing30_change: f64,
 
-    #[serde(rename = "trailing90")]
     pub trailing90: f64,
 
-    #[serde(rename = "trailing90Change")]
     pub trailing90_change: f64,
 
-    #[serde(rename = "trailing365")]
     pub trailing365: f64,
 
-    #[serde(rename = "trailing365Change")]
     pub trailing365_change: f64,
 
-    #[serde(rename = "wtd")]
     pub wtd: f64,
 
-    #[serde(rename = "wtdChange")]
     pub wtd_change: f64,
 
-    #[serde(rename = "mtd")]
     pub mtd: f64,
 
-    #[serde(rename = "mtdChange")]
     pub mtd_change: f64,
 
-    #[serde(rename = "qtd")]
     pub qtd: f64,
 
-    #[serde(rename = "qtdChange")]
     pub qtd_change: f64,
 
-    #[serde(rename = "ytd")]
     pub ytd: f64,
 
-    #[serde(rename = "ytdChange")]
     pub ytd_change: f64,
 }
 

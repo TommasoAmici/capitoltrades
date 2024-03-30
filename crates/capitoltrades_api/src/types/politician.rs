@@ -4,33 +4,28 @@ use serde::{Deserialize, Serialize};
 pub type PoliticianID = String;
 
 #[derive(Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct Politician {
     #[serde(rename = "_stateId")]
     pub state_id: String,
 
-    #[serde(rename = "chamber")]
     pub chamber: Chamber,
 
-    #[serde(rename = "dob")]
     dob: String,
 
-    #[serde(rename = "firstName")]
     pub first_name: String,
 
-    #[serde(rename = "gender")]
     gender: Gender,
 
-    #[serde(rename = "lastName")]
     pub last_name: String,
 
-    #[serde(rename = "nickname")]
     nickname: Option<String>,
 
-    #[serde(rename = "party")]
     pub party: Party,
 }
 
 #[derive(Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct PoliticianDetail {
     #[serde(rename = "_politicianId")]
     pub politician_id: PoliticianID,
@@ -38,55 +33,38 @@ pub struct PoliticianDetail {
     #[serde(rename = "_stateId")]
     pub state_id: String,
 
-    #[serde(rename = "party")]
     pub party: Party,
 
-    #[serde(rename = "partyOther")]
     party_other: Option<serde_json::Value>,
 
-    #[serde(rename = "district")]
     district: Option<String>,
 
-    #[serde(rename = "firstName")]
     pub first_name: String,
 
-    #[serde(rename = "lastName")]
     pub last_name: String,
 
-    #[serde(rename = "nickname")]
     nickname: Option<String>,
 
-    #[serde(rename = "middleName")]
     middle_name: Option<String>,
 
-    #[serde(rename = "fullName")]
     full_name: String,
 
-    #[serde(rename = "dob")]
     dob: String,
 
-    #[serde(rename = "gender")]
     gender: Gender,
 
-    #[serde(rename = "socialFacebook")]
     social_facebook: Option<String>,
 
-    #[serde(rename = "socialTwitter")]
     social_twitter: Option<String>,
 
-    #[serde(rename = "socialYoutube")]
     social_youtube: Option<String>,
 
-    #[serde(rename = "website")]
     website: Option<String>,
 
-    #[serde(rename = "chamber")]
     pub chamber: Chamber,
 
-    #[serde(rename = "committees")]
     committees: Vec<String>,
 
-    #[serde(rename = "stats")]
     pub stats: Stats,
 }
 impl Into<Politician> for PoliticianDetail {
@@ -105,17 +83,14 @@ impl Into<Politician> for PoliticianDetail {
 }
 
 #[derive(Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct Stats {
-    #[serde(rename = "dateLastTraded")]
     pub date_last_traded: Option<NaiveDate>,
 
-    #[serde(rename = "countTrades")]
     pub count_trades: i64,
 
-    #[serde(rename = "countIssuers")]
     pub count_issuers: i64,
 
-    #[serde(rename = "volume")]
     pub volume: i64,
 }
 

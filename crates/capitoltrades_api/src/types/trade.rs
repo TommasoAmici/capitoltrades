@@ -24,6 +24,7 @@ pub enum TradeSize {
 }
 
 #[derive(Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct Trade {
     #[serde(rename = "_txId")]
     pub tx_id: i64,
@@ -37,86 +38,64 @@ pub struct Trade {
     #[serde(rename = "_issuerId")]
     pub issuer_id: IssuerID,
 
-    #[serde(rename = "pubDate")]
     pub pub_date: DateTime<Utc>,
 
-    #[serde(rename = "filingDate")]
     pub filing_date: NaiveDate,
 
-    #[serde(rename = "txDate")]
     pub tx_date: NaiveDate,
 
-    #[serde(rename = "txType")]
     pub tx_type: TxType,
 
-    #[serde(rename = "txTypeExtended")]
     tx_type_extended: Option<serde_json::Value>,
 
-    #[serde(rename = "hasCapitalGains")]
     has_capital_gains: bool,
 
-    #[serde(rename = "owner")]
     owner: Owner,
 
-    #[serde(rename = "chamber")]
     chamber: Chamber,
 
-    #[serde(rename = "price")]
     pub price: Option<f64>,
 
-    #[serde(rename = "size")]
     pub size: Option<i64>,
 
-    #[serde(rename = "sizeRangeHigh")]
     size_range_high: Option<i64>,
 
-    #[serde(rename = "sizeRangeLow")]
     size_range_low: Option<i64>,
 
-    #[serde(rename = "value")]
     pub value: i64,
 
-    #[serde(rename = "filingId")]
     filing_id: i64,
 
     #[serde(rename = "filingURL")]
     pub filing_url: String,
 
-    #[serde(rename = "reportingGap")]
     pub reporting_gap: i64,
 
-    #[serde(rename = "comment")]
     comment: Option<String>,
 
-    #[serde(rename = "committees")]
     committees: Vec<String>,
 
-    #[serde(rename = "asset")]
     pub asset: Asset,
 
-    #[serde(rename = "issuer")]
     pub issuer: Issuer,
 
-    #[serde(rename = "politician")]
     pub politician: Politician,
 
-    #[serde(rename = "labels")]
     labels: Vec<String>,
 }
 
 #[derive(Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct Asset {
-    #[serde(rename = "assetType")]
     pub asset_type: String,
 
-    #[serde(rename = "assetTicker")]
     pub asset_ticker: Option<String>,
 
-    #[serde(rename = "instrument")]
     pub instrument: Option<String>,
 }
 
 #[derive(Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct Issuer {
     #[serde(rename = "_stateId")]
     state_id: Option<String>,
@@ -124,48 +103,31 @@ pub struct Issuer {
     #[serde(rename = "c2iq")]
     c2_iq: Option<String>,
 
-    #[serde(rename = "country")]
     country: Option<String>,
 
-    #[serde(rename = "issuerName")]
     pub issuer_name: String,
 
-    #[serde(rename = "issuerTicker")]
     pub issuer_ticker: Option<String>,
 
-    #[serde(rename = "sector")]
     sector: Option<Sector>,
 }
 
 #[derive(Serialize, Deserialize)]
+#[serde(rename_all = "kebab-case")]
 pub enum Owner {
-    #[serde(rename = "child")]
     Child,
-
-    #[serde(rename = "joint")]
     Joint,
-
-    #[serde(rename = "not-disclosed")]
     NotDisclosed,
-
     #[serde(rename = "self")]
     OwnerSelf,
-
-    #[serde(rename = "spouse")]
     Spouse,
 }
 
 #[derive(Serialize, Deserialize)]
+#[serde(rename_all = "kebab-case")]
 pub enum TxType {
-    #[serde(rename = "buy")]
     Buy,
-
-    #[serde(rename = "sell")]
     Sell,
-
-    #[serde(rename = "exchange")]
     Exchange,
-
-    #[serde(rename = "receive")]
     Receive,
 }

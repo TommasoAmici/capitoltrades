@@ -13,7 +13,7 @@ use tracing_subscriber::FmtSubscriber;
 
 #[derive(BotCommands, Clone)]
 #[command(
-    rename_rule = "lowercase",
+    rename_rule = "snake_case",
     description = "These commands are supported:"
 )]
 enum Command {

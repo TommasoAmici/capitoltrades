@@ -3,7 +3,7 @@ use url::Url;
 
 use crate::{
     query::{IssuerQuery, PoliticianQuery, Query, TradeQuery},
-    types::{IssuerDetail, PoliticianDetail, Response, Trade},
+    types::{IssuerDetail, PaginatedResponse, PoliticianDetail, Trade},
     user_agent::get_user_agent,
     Error,
 };
@@ -24,7 +24,7 @@ impl Client {
         query.add_to_url(&mut url)
     }
 
-    async fn get<T, Q>(&self, path: &str, query: &Q) -> Result<Response<T>, Error>
+    async fn get<T, Q>(&self, path: &str, query: &Q) -> Result<PaginatedResponse<T>, Error>
     where
         T: DeserializeOwned,
         Q: Query,
@@ -53,7 +53,7 @@ impl Client {
                 tracing::error!("Failed to get resource: {}", e);
                 Error::RequestFailed
             })?
-            .json::<Response<T>>()
+            .json::<PaginatedResponse<T>>()
             .await
             .map_err(|e| {
                 tracing::error!("Failed to parse resource: {}", e);
@@ -62,19 +62,22 @@ impl Client {
         Ok(resp)
     }
 
-    pub async fn get_trades(&self, query: &TradeQuery) -> Result<Response<Trade>, Error> {
+    pub async fn get_trades(&self, query: &TradeQuery) -> Result<PaginatedResponse<Trade>, Error> {
         self.get::<Trade, TradeQuery>("/trades", query).await
     }
 
     pub async fn get_politicians(
         &self,
         query: &PoliticianQuery,
-    ) -> Result<Response<PoliticianDetail>, Error> {
+    ) -> Result<PaginatedResponse<PoliticianDetail>, Error> {
         self.get::<PoliticianDetail, PoliticianQuery>("/politicians", query)
             .await
     }
 
-    pub async fn get_issuers(&self, query: &IssuerQuery) -> Result<Response<IssuerDetail>, Error> {
+    pub async fn get_issuers(
+        &self,
+        query: &IssuerQuery,
+    ) -> Result<PaginatedResponse<IssuerDetail>, Error> {
         self.get::<IssuerDetail, IssuerQuery>("/issuers", query)
             .await
     }

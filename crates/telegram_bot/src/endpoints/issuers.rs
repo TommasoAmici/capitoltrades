@@ -3,7 +3,7 @@ use crate::errors::HandlerResult;
 use crate::markdown::issuers::issuer_detail_to_markdown;
 use crate::tracking::issuers::{get_tracked_issuers, track_issuer, untrack_issuer};
 use crate::tracking::status::Status;
-use capitoltrades_api::types::{IssuerDetail, Response};
+use capitoltrades_api::types::{IssuerDetail, PaginatedResponse};
 use capitoltrades_api::{Client, IssuerQuery, IssuerSortBy, Query, SortDirection};
 use sqlx::SqlitePool;
 use std::collections::HashSet;
@@ -64,7 +64,7 @@ fn list_keyboard(query: &IssuerQuery) -> InlineKeyboardMarkup {
     keyboard.append_row(pagination_row)
 }
 
-fn text_from_response(response: &Response<IssuerDetail>) -> String {
+fn text_from_response(response: &PaginatedResponse<IssuerDetail>) -> String {
     let mut text = String::new();
     for issuer in &response.data {
         text.push_str(&issuer_detail_to_markdown(&issuer));

@@ -22,7 +22,7 @@ pub struct Paging {
 }
 
 #[derive(Serialize, Deserialize)]
-pub struct Response<T> {
+pub struct PaginatedResponse<T> {
     #[serde(rename = "meta")]
     meta: Meta,
 

@@ -3,7 +3,7 @@ use crate::errors::HandlerResult;
 use crate::markdown::politicians::politician_detail_to_markdown;
 use crate::tracking::politicians::{get_tracked_politicians, track_politician, untrack_politician};
 use crate::tracking::status::Status;
-use capitoltrades_api::types::{PoliticianDetail, Response};
+use capitoltrades_api::types::{PaginatedResponse, PoliticianDetail};
 use capitoltrades_api::{Client, PoliticianQuery, PoliticianSortBy, Query, SortDirection};
 use sqlx::SqlitePool;
 use std::collections::HashSet;
@@ -84,7 +84,7 @@ fn list_keyboard(query: &PoliticianQuery) -> InlineKeyboardMarkup {
     keyboard.append_row(pagination_row)
 }
 
-fn text_from_response(response: &Response<PoliticianDetail>) -> String {
+fn text_from_response(response: &PaginatedResponse<PoliticianDetail>) -> String {
     let mut text = String::new();
     for politician in &response.data {
         text.push_str(&politician_detail_to_markdown(&politician));

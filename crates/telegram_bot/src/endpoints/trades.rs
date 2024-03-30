@@ -1,7 +1,7 @@
 use super::actions::Action;
 use crate::errors::HandlerResult;
 use crate::markdown::trades::trade_to_markdown;
-use capitoltrades_api::types::{Response, Trade};
+use capitoltrades_api::types::{PaginatedResponse, Trade};
 use capitoltrades_api::{Client, Query, SortDirection, TradeQuery, TradeSortBy};
 use teloxide::payloads::EditMessageTextSetters;
 use teloxide::types::InlineKeyboardButtonKind;
@@ -58,7 +58,7 @@ fn list_keyboard(query: &TradeQuery) -> InlineKeyboardMarkup {
     keyboard.append_row(pagination_row)
 }
 
-fn text_from_response(response: &Response<Trade>) -> String {
+fn text_from_response(response: &PaginatedResponse<Trade>) -> String {
     let mut text = String::new();
     for trade in &response.data {
         text.push_str(&trade_to_markdown(&trade));

@@ -1,5 +1,6 @@
 use sqlx::{Error, SqlitePool};
 
+/// Returns a list of chat_ids that should be notified about this trade.
 pub async fn get_to_notify(
     pool: &SqlitePool,
     politician_id: &str,
